@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% extends 'base.html' %}
+</head>
+<body class="p-3 m-0 border-0 bd-example">
+    {% block content %}
+                  <form method="post" action="">
+                    {% csrf_token %}
+                      <div class="form-control rounded 3" style="width:30%;background: rgba(255,255,255,0.35);
+-webkit-backdrop-filter: blur(20px);
+backdrop-filter: blur(20px);
+border: 1px solid rgba(255,255,255,0.525);
+border-radius: 25px!important;">
+                          <label class="floatingInput">Время доставки:</label>
+                          <style>
+        #id_delivery_time, #id_status{background: rgba(255,255,255,0.35);
+-webkit-backdrop-filter: blur(20px);
+backdrop-filter: blur(20px);
+border: 1px solid rgba(255,255,255,0.525);}
+    </style>
+                          {{form.delivery_time}}
+                          <label class="floatingInput">Cтатус:</label>
+                          {{form.status}}
+                          <button class="btn btn-success ml-2" type="submit" style="margin-top:10px;">Изменить</button>
+                      </div>
+                  </form>
+    {% endblock %}
+</body>
+</html>

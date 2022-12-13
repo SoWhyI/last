@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+     {% extends 'base.html' %}
+  {% block title %}
+  Ваша корзина товаров
+{% endblock %}
+</head>
+<body>
+{% block content %}
+<script>
+Event_click = document.getElementById("buy_btn");
+    Event_click.addEventListener("click", function(){
+        if (document.getElementById("typeName").value == ""){
+          document.getElementById("typeName").style.backgroundColor = "pink";
+        }
+        if (document.getElementById("card-mask").value == ""){
+          document.getElementById("card-mask").style.backgroundColor = "pink";
+        }
+        if (document.getElementById("year-mask").value == ""){
+          document.getElementById("year-mask").style.backgroundColor = "pink";
+        }
+        if (document.getElementById("typeText").value == ""){
+          document.getElementById("typeText").style.backgroundColor = "pink";
+        }else{
+          window.location.href = '{% url "orders:order_add" %}';
+        }
+    });
+            function httpGet(theUrl)
+            {
+                var xmlHttp = new XMLHttpRequest();
+                xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+                xmlHttp.send( null );
+                return xmlHttp.responseText;
+            }
+        </script>
+    <section class="h-100 h-custom">
+      <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100" >
+          <div class="col">
+            <div class="card"  style="border-radius: 15px;background: rgba(255,255,255,0.35); -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.525);">
+              <div class="card-body p-4">
+                <h5 class="mb-0" style="text-align: center; padding-bottom: 25px ; ">Корзина товаров</h5>
+                <div class="row">
+                  <div class="col-lg-7" style="max-width: 70%; min-width: 70%">
+                      {% for item in object_list %}
+                        {% with product=item %}
+                        <div class="card mb-3" style="border-radius: 15px;background: rgba(255,255,255,0.35);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.525);">
+                          <div class="card-body" >
+                            <div class="d-flex justify-content-between">
+                              <div class="d-flex flex-row align-items-center" style="width: 50%">
+                                <div>
+                                  <img
+                                    src="{{MEDIA_URL}}{{ product.photo }}"
+                                    class="img-fluid rounded-3" alt="Shopping item" style="width: 150px;min-width: 150px; border-radius: 15px">
+                                </div>
+                                <div class="ms-3" style=" margin-left: 30px">
+                                  <h5>{{product.name}}</h5>
+                                    <p style="margin: 10px">
+                                      <a class="btn" data-toggle="collapse" href="#collapseExample{{item.id}}" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                        Описание
+                                      </a>
+                                    </p>
+                                    <div class="collapse" id="collapseExample{{item.id}}" >
+                                      <div class="card card-body" style="border: none">
+                                          <p>{{ product.description }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                              </div>
+
+                                <div class="btn-group" role="group" aria-label="Группа кнопок по умолчанию" style="align-items: center;">
+
+                                  <a href='{% url "cart:product_count_minus" product.id %}' type="button" class="btn btn-outline-dark">-</a>
+                                  <button type="submit" class="btn btn-outline-dark">{{product.quantity_in_cart}}</button>
+                                  <a href='{% url "cart:product_count_plus" product.id %}' type="button" class="btn btn-outline-dark">+</a>
+
+                                </div>
+                              <div class="d-flex flex-row align-items-center" style="text-align: center;">
+                                <div style="width: 80px;">
+                                  <span>{{product.price}}₽</span>
+                                </div>
+                                <form action='{% url "cart:product_delete" product.id %}' method="post" style="">
+                                    {% csrf_token %}
+                                    {{ form.as_p }}
+                                    <button type="submit" class="btn btn-outline-danger">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                        <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"></path>
+                                        </svg>
+                                    </button>
+                                </form>
+                              </div>
+
+                            </div>
+                          </div>
+                        </div>
+
+                    {% endwith %}
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+</section>
+{% endblock %}
+</body>
+</html>

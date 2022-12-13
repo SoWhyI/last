@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Вход</title>
+    <style>
+        body {
+           color: black;
+           width: 100%;
+           justify-content: center;
+           align-items: center;
+           height: 100vh;
+        }
+        .text{
+            color: black;
+            display: block;
+            margin-top: 30px;
+            font-size: 20px;
+            font-weight: 500;
+        }
+
+        .auth{
+            height: auto;
+            width: 400px;
+            background-color: rgba(255,255,255,0.13);
+            position: absolute;
+            transform: translate(-50%,-50%);
+            top: 50%;
+            left: 50%;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.1);
+            box-shadow: 0 0 40px rgba(8,7,16,0.6);
+            padding-top: 30px;
+            padding-bottom: 30px;
+            text-align: center;
+        }
+        input{
+            text-align: center;
+            border-width: initial;
+            border-radius: 25px;
+        }
+    </style>
+</head>
+<body>
+    {% extends 'base.html' %}
+
+    {% block title %}Вход{% endblock %}
+
+    {% block content %}
+
+    <form class="auth" method="post">
+        <h2 style="color: black;">Вход</h2>
+        {% csrf_token %}
+            <label  class="text">Логин</label>
+            <div>{{form.username}}</div>
+
+            <label class="text">Пароль</label>
+            <div>{{form.password}}</div>
+        <button type="submit" style=" color: black; margin-top: 50px; width: 200px; padding: 15px 0;
+        font-size: 18px; font-weight: 600; border-radius: 25px; cursor: pointer;">Войти</button>
+     </form>
+    {% endblock %}
+</body>
+</html>

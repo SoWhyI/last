@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% extends 'base.html' %}
+</head>
+<body class="p-3 m-0 border-0 bd-example">
+
+    {% block content %}
+    {% if "orders.change_order" in user.get_user_permissions %}
+    <style>
+        .nav-link.active{
+            background-color: white;
+            background: rgba(234,165,165,0.5);
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(234,165,165,0.1);
+            border-radius: 25px
+        }
+    </style>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" id="home-tab" data-toggle="tab" style="background-color: transparent" href="#home" role="tab" aria-controls="home" aria-selected="true">Готовисящиеся заказы</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="profile-tab" data-toggle="tab" style="background-color: transparent" href="#profile" role="tab" aria-controls="profile" aria-selected="false">В доставке</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="contact-tab" data-toggle="tab" style="background-color: transparent" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Выполненные</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="all-tab" data-toggle="tab" style="background-color: transparent" href="#all" role="tab" aria-controls="all" aria-selected="false">Все</a>
+      </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+          {% for item in preparing %}
+          <div class="card" style="margin-bottom: 15px;background: rgba(255,255,255,0.35);
+-webkit-backdrop-filter: blur(20px);
+backdrop-filter: blur(20px);
+border: 1px solid rgba(255,255,255,0.525);">
+            <div class="card-header" id="heading{{item.id}}">
+              <h5 class="mb-0" style="display: flex">
+                <button class="btn btn" data-toggle="collapse" data-target="#collapse{{item.id}}" aria-expanded="false" aria-controls="collapse{{item.id}}" style="width: 100%; height: 100%; text-align: left;background: rgba(255,255,255,0.35);
+-webkit-backdrop-filter: blur(20px);
+backdrop-filter: blur(20px);
+border: 1px solid rgba(255,255,255,0.525);">
+                  Заказ №{{item.id}}
+                  Статус: {{item.status}}
+                  Дата: {{item.order_date}}
+                  Вермя доставки: {{item.delivery_time}}
+                </button>
+                  <a class="btn btn-success" href="{% url 'orders:order_edit' item.id %}">Изменить</a>
+              </h5>
+            </div>
+
+            <div id="collapse{{item.id}}" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+              <div class="card-body">
+                  <ul>
+                      {% for product in item.product_list %}
+                        <div class="card" style="
+                                     text-align: center;
+                                     display: inline-block;
+                                     margin: 10px;
+                                     width: 200px;
+                                     background: rgba(255,255,255,0.35);
+-webkit-backdrop-filter: blur(20px);
+backdrop-filter: blur(20px);
+border: 1px solid rgba(255,255,255,0.525);
+                                     ">
+                      <img src="{{MEDIA_URL}}{{ product.photo }}" class="card-img-top" style="height: 150px">
+                      <div class="card-body">
+                        <h5 class="card-title">{{product.name}}</h5>
+                        <div class="ms-3" style="width: 100%">
+                                <p style="margin: 10px">
+                                  <a class="btn" data-toggle="collapse" href="#collapseExamplepreparing{{product.id}}" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                    Описание
+                                  </a>
+                                </p>
+                                <div class="collapse" id="collapseExamplepreparing{{product.id}}" >
+                                  <div class="card card-body" style="border: none;background: rgba(234,165,165,0.2);
+-webkit-backdrop-filter: blur(1px);
+backdrop-filter: blur(1px);
+border: 1px solid rgba(234,165,165,0.1);
+border-radius: 25px">
+                                      <p class="small mb-0">Масса: {{ product.weight }} грамм<br> Каллорий: {{ product.calories }}</p>
+                                      <p>{{ product.description }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                          <div class="btn-group" role="group" aria-label="Basic outlined example">
+
+                            <div class="text-wrap" style=" font-size: 16px;">
+                                    <p>Цена: {{product.price}}</p>
+                                    <p>Кол-во: {{product.quantity_in_cart}}</p>
+                            </div>
+
+                        </div>
+                          <div>
+                              <p></p>
+                          </div>
+                      </div>
+                    </div>
+                      {% endfor %}
+                  </ul>
+
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+          {% for item in delivery %}
+          <div class="card" style="margin-bottom: 15px;background: rgba(255,255,255,0.35);
+-webkit-backdrop-filter: blur(20px);
+backdrop-filter: blur(20px);
+border: 1px solid rgba(255,255,255,0.525);">
+            <div class="card-header" id="heading{{item.id}}">
+              <h5 class="mb-0" style="display: flex">
+                <button class="btn btn" data-toggle="collapse" data-target="#collapse{{item.id}}" aria-expanded="false" aria-controls="collapse{{item.id}}" style="width: 100%; height: 100%; text-align: left;background: rgba(255,255,255,0.35);
+-webkit-backdrop-filter: blur(20px);
+backdrop-filter: blur(20px);
+border: 1px solid rgba(255,255,255,0.525);">
+                  Заказ №{{item.id}}
+                  Статус: {{item.status}}
+                  Дата: {{item.order_date}}
+                  Вермя доставки: {{item.delivery_time}}
+                </button>
+                  <a class="btn btn-success" href="{% url 'orders:order_edit' item.id %}">Изменить</a>
+              </h5>
+            </div>
+
+            <div id="collapse{{item.id}}" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+              <div class="card-body">
+                  <ul>
+                      {% for product in item.product_list %}
+                        <div class="card" style="
+                                     text-align: center;
+                                     display: inline-block;
+                                     margin: 10px;
+                                     width: 200px;background: rgba(255,255,255,0.35);
+-webkit-backdrop-filter: blur(20px);
+backdrop-filter: blur(20px);
+border: 1px solid rgba(255,255,255,0.525);
+                                     ">
+                      <img src="{{MEDIA_URL}}{{ product.photo }}" class="card-img-top" style="height: 150px">
+                      <div class="card-body">
+                        <h5 class="card-title">{{product.name}}</h5>
+                        <div class="ms-3" style="width: 100%">
+                                <p style="margin: 10px">
+                                  <a class="btn" data-toggle="collapse" href="#collapseExampledelivery{{product.id}}" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                    Описание
+                                  </a>
+                                </p>
+                                <div class="collapse" id="collapseExampledelivery{{product.id}}" >
+                                  <div class="card card-body" style="border: none;background: rgba(234,165,165,0.2);
+-webkit-backdrop-filter: blur(1px);
+backdrop-filter: blur(1px);
+border: 1px solid rgba(234,165,165,0.1);
+border-radius: 25px">
+                                      <p class="small mb-0">Масса: {{ product.weight }} грамм<br> Каллорий: {{ product.calories }}</p>
+                                      <p>{{ product.description }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                          <div class="btn-group" role="group" aria-label="Basic outlined example">
+
+                            <div class="text-wrap" style=" font-size: 16px;">
+                                    <p>Цена: {{product.price}}</p>
+                                    <p>Кол-во: {{product.quantity_in_cart}}</p>
+                            </div>
+
+                        </div>
+                          <div>
+                              <p></p>
+                          </div>
+                      </div>
+                    </div>
+                      {% endfor %}
+                  </ul>
+
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+          {% for item in ready %}
+          <div class="card" style="margin-bottom: 15px;background: rgba(255,255,255,0.35);
+-webkit-backdrop-filter: blur(20px);
+backdrop-filter: blur(20px);
+border: 1px solid rgba(255,255,255,0.525);">
+            <div class="card-header" id="heading{{item.id}}">
+              <h5 class="mb-0" style="display: flex">
+                <button class="btn btn" data-toggle="collapse" data-target="#collapse{{item.id}}" aria-expanded="false" aria-controls="collapse{{item.id}}" style="width: 100%; height: 100%; text-align: left;background: rgba(255,255,255,0.35);
+-webkit-backdrop-filter: blur(20px);
+backdrop-filter: blur(20px);
+border: 1px solid rgba(255,255,255,0.525);">
+                  Заказ №{{item.id}}
+                  Статус: {{item.status}}
+                  Дата: {{item.order_date}}
+                  Вермя доставки: {{item.delivery_time}}
+                </button>
+                  <a class="btn btn-success" href="{% url 'orders:order_edit' item.id %}">Изменить</a>
+              </h5>
+            </div>
+
+            <div id="collapse{{item.id}}" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+              <div class="card-body">
+                  <ul>
+                      {% for product in item.product_list %}
+                        <div class="card" style="
+                                     text-align: center;
+                                     display: inline-block;
+                                     margin: 10px;
+                                     width: 200px;
+                                     background: rgba(255,255,255,0.35);
+-webkit-backdrop-filter: blur(20px);
+backdrop-filter: blur(20px);
+border: 1px solid rgba(255,255,255,0.525);
+                                     ">
+                      <img src="{{MEDIA_URL}}{{ product.photo }}" class="card-img-top" style="height: 150px">
+                      <div class="card-body">
+                        <h5 class="card-title">{{product.name}}</h5>
+                        <div class="ms-3" style="width: 100%">
+                                <p style="margin: 10px">
+                                  <a class="btn" data-toggle="collapse" href="#collapseExampleready{{product.id}}" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                    Описание
+                                  </a>
+                                </p>
+                                <div class="collapse" id="collapseExampleready{{product.id}}" >
+                                  <div class="card card-body" style="border: none;background: rgba(234,165,165,0.2);
+-webkit-backdrop-filter: blur(1px);
+backdrop-filter: blur(1px);
+border: 1px solid rgba(234,165,165,0.1);
+border-radius: 25px">
+                                      <p class="small mb-0">Масса: {{ product.weight }} грамм<br> Каллорий: {{ product.calories }}</p>
+                                      <p>{{ product.description }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                          <div class="btn-group" role="group" aria-label="Basic outlined example">
+
+                            <div class="text-wrap" style=" font-size: 16px;">
+                                    <p>Цена: {{product.price}}</p>
+                                    <p>Кол-во: {{product.quantity_in_cart}}</p>
+                            </div>
+
+                        </div>
+                          <div>
+                              <p></p>
+                          </div>
+                      </div>
+                    </div>
+                      {% endfor %}
+                  </ul>
+
+              </div>
+            </div>
+          </div>
+            {% endfor %}
+      </div>
+      <div class="tab-pane fade" id="all" role="tabpanel" aria-labelledby="all-tab">
+          <div id="accordion">
+      {% for item in object_list %}
+          <div class="card" style="margin-bottom: 15px;background: rgba(255,255,255,0.35);
+-webkit-backdrop-filter: blur(20px);
+backdrop-filter: blur(20px);
+border: 1px solid rgba(255,255,255,0.525);">
+            <div class="card-header" id="heading{{item.id}}">
+              <h5 class="mb-0" style="display: flex">
+                <button class="btn btn" data-toggle="collapse" data-target="#collapse{{item.status}}" aria-expanded="false" aria-controls="collapse{{item.status}}" style="width: 100%; height: 100%; text-align: left;background: rgba(255,255,255,0.35);
+-webkit-backdrop-filter: blur(20px);
+backdrop-filter: blur(20px);
+border: 1px solid rgba(255,255,255,0.525);">
+                  Заказ №{{item.id}}
+                  Статус: {{item.status}}
+                  Дата: {{item.order_date}}
+                  Вермя доставки: {{item.delivery_time}}
+                </button>
+                  <a class="btn btn-success" href="{% url 'orders:order_edit' item.id %}">Изменить</a>
+              </h5>
+            </div>
+
+            <div id="collapse{{item.status}}" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+              <div class="card-body">
+                  <ul>
+                      {% for product in item.product_list %}
+                        <div class="card" style="
+                                     text-align: center;
+                                     display: inline-block;
+                                     margin: 10px;
+                                     width: 200px;background: rgba(255,255,255,0.35);
+-webkit-backdrop-filter: blur(20px);
+backdrop-filter: blur(20px);
+border: 1px solid rgba(255,255,255,0.525);
+                                     ">
+                      <img src="{{MEDIA_URL}}{{ product.photo }}" class="card-img-top" style="height: 150px">
+                      <div class="card-body">
+                        <h5 class="card-title">{{product.name}}</h5>
+                        <div class="ms-3" style="width: 100%">
+                                <p style="margin: 10px">
+                                  <a class="btn" data-toggle="collapse" href="#collapseExample{{product.id}}" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                    Описание
+                                  </a>
+                                </p>
+                                <div class="collapse" id="collapseExample{{product.id}}" >
+                                  <div class="card card-body" style="border: none;background: rgba(234,165,165,0.2);
+-webkit-backdrop-filter: blur(1px);
+backdrop-filter: blur(1px);
+border: 1px solid rgba(234,165,165,0.1);
+border-radius: 25px">
+                                      <p class="small mb-0">Масса: {{ product.weight }} грамм<br> Каллорий: {{ product.calories }}</p>
+                                      <p>{{ product.description }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                          <div class="btn-group" role="group" aria-label="Basic outlined example">
+
+                            <div class="text-wrap" style=" font-size: 16px;">
+                                    <p>Цена: {{product.price}}</p>
+                                    <p>Кол-во: {{product.quantity_in_cart}}</p>
+                            </div>
+
+                        </div>
+                          <div>
+                              <p></p>
+                          </div>
+                      </div>
+                    </div>
+                      {% endfor %}
+                  </ul>
+
+              </div>
+            </div>
+          </div>
+      {% endfor %}
+    </div>
+      </div>
+    </div>
+    {% else %}
+    <h5>404</h5>
+    {% endif %}
+    {% endblock %}
+</body>
+</html>

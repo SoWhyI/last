@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <style>
+        .auth{
+        height: auto;
+        width: 400px;
+        background-color: rgba(255,255,255,0.13);
+        position: absolute;
+        transform: translate(-50%,-50%);
+        top: 50%;
+        left: 50%;
+        border-radius: 10px;
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255,255,255,0.1);
+        box-shadow: 0 0 40px rgba(8,7,16,0.6);
+        padding-top: 30px;
+        padding-bottom: 30px;
+        text-align: center;
+        }
+        body {
+          color: black;
+          width: 100%;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+        }
+        .text{
+            color: black;
+            font-weight: bold;
+            display: block;
+            margin-top: 30px;
+        }
+        input{
+            text-align: center;
+            border-width: initial;
+            border-radius: 25px;
+        }
+    </style>
+{% extends 'base.html' %}
+    {% block content %}
+    {% if "products.delete_product" in user.get_user_permissions %}
+    <div class="auth">
+        <h2 class="text">Удаление продукта</h2>
+        <form action="" method="post">
+            {% csrf_token %}
+            <img WIDTH="300PX" height="300px" src="{{MEDIA_URL}}{{ product.photo }}">
+            <p class="text">Уверены что хотите удалить? "{{ product.name }}"</p>
+            <button class="btn btn-danger ml-2" type="submit">Подтверждаю удаление</button>
+        </form>
+        {% else %}
+          <h1 class="text">Нет прав для удаления</h1>
+        {% endif %}
+        {% endblock %}
+    </div>
+
+</body>
+</html>

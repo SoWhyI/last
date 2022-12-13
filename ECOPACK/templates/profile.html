@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Профиль</title>
+    <style>
+        .auth{
+        height: auto;
+        width: 400px;
+        background-color: rgba(255,255,255,0.13);
+        position: absolute;
+        transform: translate(-50%,-50%);
+        top: 50%;
+        left: 50%;
+        border-radius: 10px;
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255,255,255,0.1);
+        box-shadow: 0 0 40px rgba(8,7,16,0.6);
+        padding-top: 30px;
+        padding-bottom: 30px;
+        text-align: center;
+        }
+        body {
+          color: black;
+          width: 100%;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+        }
+        .text{
+            color: black;
+            display: block;
+            margin-top: 30px;
+            font-size: 20px;
+            font-weight: 500;
+        }
+        input{
+            text-align: center;
+            border-width: initial;
+            border-radius: 25px;
+        }
+    </style>
+</head>
+<body>
+{% extends 'base.html' %}
+    {% load crispy_forms_tags %}
+
+    {% block title %}Профиль{% endblock %}
+
+    {% block content %}
+
+    <div class="auth">
+    <h2 style="color: black">Профиль</h2>
+    {% if user.is_authenticated %}
+        <form action="" method="post">
+            {% csrf_token %}
+            <label class="text"> Логин</label>
+            <div>{{ form.username }}</div>
+
+            <label class="text"> Почта</label>
+            <div>{{ form.email }}</div>
+
+            <label class="text"> Имя</label>
+            <div>{{ form.name }}</div>
+
+            <label class="text"> Фамилия</label>
+            <div>{{ form.surname }}</div>
+
+            <button type="submit" style=" color: black; margin-top: 50px; width: 200px; padding: 15px 0;
+        font-size: 18px; font-weight: 600; cursor: pointer; border-radius: 25px;">Сохранить изменения</button>
+        </form>
+    {% endif %}
+    {% endblock %}
+    </div>
+</body>
+
+</html>

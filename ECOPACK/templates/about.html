@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% extends 'base.html' %}
+    {% load crispy_forms_tags %}
+
+    {% block content %}
+            <style>
+                iframe{
+                        border-radius: 25px;
+                }
+                .map{
+                    transition: 1s;
+                }
+                .map:hover{
+                    transform: scale(1.2);
+                }
+                .auth{
+                    height: auto;
+                    width: 800px;
+                    background-color: rgba(255,255,255,0.13);
+                    position: absolute;
+                    transform: translate(-50%,-50%);
+                    top: 50%;
+                    left: 50%;
+                    border-radius: 10px;
+                    backdrop-filter: blur(10px);
+                    border: 2px solid rgba(255,255,255,0.1);
+                    box-shadow: 0 0 40px rgba(8,7,16,0.6);
+                    padding-top: 30px;
+                    padding-bottom: 30px;
+                    text-align: center;
+                    }
+                body {
+                  color: black;
+                  width: 100%;
+                  justify-content: center;
+                  align-items: center;
+                  height: 100vh;
+                }
+                .text{
+                    color: black;
+                    display: block;
+                    margin-top: 30px;
+                    font-size: 20px;
+                    font-weight: 500;
+                }
+                input{
+                    text-align: center;
+                    border-width: initial;
+                    border-radius: 25px;
+                }
+    </style>
+        <div class="auth">
+            <p><h1>Контактная информация</h1></p>
+            <p class="text">Для связи:</p>
+            <p class="text">Почта: ecopack@gmail.com</p>
+            <p class="text">Телефон: +79223640707</p>
+
+    {% endblock %}
+       </div>
+</body>
+
+</html>
